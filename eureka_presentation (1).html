@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EUREKA - Transformando la CGR con IA y Gamificación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .title-slide::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.6em;
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .step-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .step {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            border-left: 5px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .gamification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .game-feature {
+            background: linear-gradient(135deg, #6c5ce7, #74b9ff);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .game-feature:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tech-item:hover::before {
+            left: 100%;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .benefit {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-top: 4px solid #e74c3c;
+            transition: all 0.3s ease;
+        }
+
+        .benefit:hover {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .future-vision {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            text-align: center;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .future-vision::after {
+            content: '🚀';
+            position: absolute;
+            top: -20px;
+            right: 30px;
+            font-size: 3em;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .final-message {
+            background: linear-gradient(135deg, #2d3436, #636e72);
+            color: white;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid #3498db;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        li:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateX(5px);
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #3498db;
+            margin: 0 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .slide {
+                padding: 20px;
+                margin: 15px 0;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.6em;
+            }
+            
+            .step-container,
+            .gamification-grid,
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Slide Título -->
+        <div class="slide title-slide">
+            <h1>EUREKA</h1>
+            <p class="subtitle">Transformando la CGR con IA y Gamificación</p>
+        </div>
+
+        <!-- Slide Presentación del Equipo -->
+        <div class="slide">
+            <h2><span class="icon">👥</span>Equipo EUREKA</h2>
+            <div style="text-align: center; background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                <p style="font-size: 1.3em; line-height: 1.6; margin: 0;">
+                    Eureka combina Inteligencia Artificial con validación humana gamificada, queremos fomentar tecnología potenciadora mediante sostenibilidad humana... todos y todas están invitados a aportar... todos y todas están convocados a jugar...
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 40px 0;">
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #2c3e50; margin: 15px 0 10px;">José Pablo Rojas Barrantes</h3>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #2c3e50; margin: 15px 0 10px;">Jonathan Andrey Molina Campos</h3>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #2c3e50; margin: 15px 0 10px;">Pedro Jiménez García</h3>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #2c3e50; margin: 15px 0 10px;">Brandon José Ruiz Miranda</h3>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #2c3e50; margin: 15px 0 10px;">Carlos Alberto Maroto Gutiérrez</h3>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #2c3e50; margin: 15px 0 10px;">Sugey Elisa Monge Solano</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 1: El Tesoro Escondido -->
+        <div class="slide">
+            <h2><span class="icon">💎</span>El Tesoro Escondido</h2>
+            <h3>¿Qué tenemos en nuestras manos?</h3>
+            <ul>
+                <li><strong>Un Tesoro Oculto:</strong> En la Contraloría tenemos un tesoro escondido: años y años de conocimiento especializado disperso en miles de documentos.</li>
+                <li><strong>Riqueza Institucional:</strong> Décadas de experiencia, criterios jurídicos, procedimientos y sabiduría acumulada esperan ser descubiertos.</li>
+                <li><strong>La Oportunidad:</strong> Este tesoro está en espera de ser revelado con la estrategia adecuada. EUREKA es más que una solución tecnológica: es la estrategia para extraer ese tesoro institucional.</li>
+            </ul>
+        </div>
+
+        <!-- Slide 2: La Estrategia -->
+        <div class="slide">
+            <h2><span class="icon">🗝️</span>La Estrategia con 2 Pilares</h2>
+            <h3>¿Cómo extraemos ese tesoro?</h3>
+            
+            <div class="step-container">
+                <div class="step">
+                    <h3><span class="icon">1</span>Primer Pilar: Extracción con IA</h3>
+                    <p>Un sistema de Inteligencia Artificial funciona como un minero digital, extrayendo de forma masiva, rápida y ordenada las gemas de conocimiento ocultas en miles de documentos institucionales.</p>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="icon">2</span>Segundo Pilar: Validación Humana Gamificada</h3>
+                    <p>Las personas CGR, convertidas en expertos curadores, validan y pulen cada pieza de conocimiento extraída, asegurando que solo gemas validadas, veraces y precisas formen parte de nuestro tesoro institucional.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide Ejemplo -->
+        <div class="slide">
+            <h2><span class="icon">🔍</span>EUREKA en Acción: Un Ejemplo Real</h2>
+            
+            <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 30px; margin: 20px 0; border-left: 5px solid #2c3e50;">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">Pregunta Generada por IA</h3>
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <p style="font-style: italic; font-size: 1.1em; color: #34495e;">
+                        "¿Cuál fue el fundamento jurídico principal utilizado por la Contraloría para determinar la responsabilidad administrativa?"
+                    </p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                    <div style="background: #3498db; color: white; padding: 10px; border-radius: 8px; text-align: center;">
+                        <strong>Categoría:</strong> fundamento_juridico
+                    </div>
+                    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 8px; text-align: center;">
+                        <strong>Método:</strong> LLM (Gemini flash 2.5)
+                    </div>
+                    <div style="background: #e74c3c; color: white; padding: 10px; border-radius: 8px; text-align: center;">
+                        <strong>Tipo:</strong> Técnico
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #2c3e50, #3498db); color: white; border-radius: 15px; padding: 30px; margin: 20px 0;">
+                <h3 style="color: white; margin-bottom: 20px;">Respuesta Extraída</h3>
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 15px 0;">
+                    <p style="font-size: 1.1em; line-height: 1.6;">
+                        "Artículo 38 inciso i) de la Ley contra la Corrupción y el Enriquecimiento Ilícito en la Función Pública, No. 8422, por omisión injustificada de presentar la declaración jurada de bienes final..."
+                    </p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; text-align: center;">
+                        <strong>Confianza:</strong><br>95%
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; text-align: center;">
+                        <strong>Tokens:</strong><br>2,559
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; text-align: center;">
+                        <strong>Validación:</strong><br>Pendiente
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fd79a8, #fdcb6e); color: white; border-radius: 15px; padding: 25px; text-align: center; margin: 20px 0;">
+                <h3 style="color: white; margin-bottom: 15px;">🎯 Proceso de Validación</h3>
+                <p style="font-size: 1.1em; line-height: 1.6;">
+                    Las personas CGR validan estas extracciones a través del sistema gamificado, mejorando la precisión y creando una base de datos confiable.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Gamificación -->
+        <div class="slide">
+            <h2><span class="icon">🎮</span>Gamificación en Acción: ¡Todos Participan!</h2>
+            <h3>¿Cómo funciona el juego?</h3>
+            
+            <div style="background: linear-gradient(135deg, #e17055, #f39c12); color: white; border-radius: 15px; padding: 30px; margin: 30px 0; text-align: center;">
+                <h3 style="color: white; margin-bottom: 20px;">🎯 Juguemos:</h3>
+                <p style="font-size: 1.1em; line-height: 1.6;">
+                    Imagínate un juego tipo asteroides, donde cada cierto tiempo validas datos simples (fechas, nombres) hasta análisis complejos (criterios legales, procedimientos). Hay tareas para todos los niveles de experiencia. Es un esquema ganar/ganar, aprendes, ganas puntos y reconocimientos para tu desarrollo laboral y aportas a la institución a tener datos con validación humana para entrenar los modelos de IA.
+                </p>
+            </div>
+            
+            <div class="gamification-grid">
+                <div class="game-feature">
+                    <h3>👥 Participación Abierta</h3>
+                    <p>Cualquier persona CGR puede unirse, sin importar su puesto, posición o División. La diversidad de perspectivas enriquece el proceso de validación.</p>
+                </div>
+                
+                <div class="game-feature">
+                    <h3>🏆 Recompensas y Reconocimiento</h3>
+                    <p>Gana puntos, insignias y certificados por contribuir. El sistema reconoce y premia el esfuerzo y la calidad de las contribuciones.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Tecnología -->
+        <div class="slide">
+            <h2><span class="icon">⚙️</span>La Tecnología Detrás de la Magia</h2>
+            <h3>¿Qué tecnologías usamos?</h3>
+            
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h3>🧠 Fine-Tuning (Ajuste Fino)</h3>
+                    <p>Entrenamos a la IA con datos validados por personas para que entienda el lenguaje contralor y los procesos únicos de la CGR, adaptándola específicamente a la terminología jurídica y administrativa de la institución. Queremos modelos de IA que entiendan la cultura, el lenguaje y la forma de ser de nosotros.</p>
+                </div>
+                
+                <div class="tech-item">
+                    <h3>🤖 RAG (Memoria Institucional)</h3>
+                    <p>La RAG es como darle una super memoria a un modelo de IA que habla lenguaje contralor, es darle un superpoder para que puede consultar toda la base de conocimiento de la CGR para dar respuestas precisas y actualizadas e indicar cuál es la fuente (documentos) donde extrajo el dato que está dando, funcionando como una memoria institucional inteligente.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Impacto en el Modelo de Negocio CGR -->
+        <div class="slide">
+            <h2><span class="icon">🎯</span>Impacto en el Modelo de Negocio CGR</h2>
+            <h3>¿Cómo EUREKA transforma nuestros tres ejes estratégicos?</h3>
+            
+            <div class="tech-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
+                <div class="tech-item" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
+                    <h3>👥 Sostenibilidad Humana</h3>
+                    <h4 style="color: #fff; margin: 15px 0; font-size: 1.1em;">Democratización de la Participación</h4>
+                    <p>Fortalece una cultura de mejora continua y sentido de pertenencia a través de la gamificación. Cualquier persona CGR puede contribuir, potenciando capacidades humanas y fomentando el aprendizaje colaborativo institucional.</p>
+                </div>
+                
+                <div class="tech-item" style="background: linear-gradient(135deg, #00b894, #55efc4);">
+                    <h3>⚙️ Procesos Adaptativos</h3>
+                    <h4 style="color: #fff; margin: 15px 0; font-size: 1.1em;">Procesos Interconectados y Flexibles</h4>
+                    <p>Crea procesos que se adaptan a nuevas situaciones. La IA facilita compartir conocimientos entre áreas, mientras la validación gamificada permite que las personas entiendan el "lenguaje técnico" de cada negocio, desarrollando conocimiento base transversal.</p>
+                </div>
+                
+                <div class="tech-item" style="background: linear-gradient(135deg, #fd79a8, #fdcb6e);">
+                    <h3>🚀 Tecnología Potenciadora</h3>
+                    <h4 style="color: #fff; margin: 15px 0; font-size: 1.1em;">Automatización Inteligente</h4>
+                    <p>Implementa capacidades avanzadas de IA (Fine-Tuning y RAG). Reduce tareas repetitivas, automatiza búsqueda de antecedentes, libera tiempo para actividades estratégicas y sienta las bases para fiscalización prospectiva anticipando riesgos.</p>
+                </div>
+            </div>
+
+            <div class="future-vision">
+                <h3>🌟 Visión de Impacto Social</h3>
+                <p>EUREKA permitiría exportar el conocimiento institucional a la ciudadanía mediante chatbots o agentes inteligentes, brindando no solo un mejor servicio, sino ayudando a la sociedad a comprender de manera más clara el valor que nuestra institución aporta al país.</p>
+            </div>
+        </div>
+
+        <!-- Slide Final -->
+        <div class="slide">
+            <h2><span class="icon">🌐</span>¿Quieres conocer más?</h2>
+            <div style="text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 40px; border-radius: 20px; margin: 30px 0;">
+                <h3 style="color: white; margin-bottom: 25px; font-size: 1.8em;">En nuestro sitio web tenemos podcast, videos y demos</h3>
+                <p style="font-size: 1.3em; margin-bottom: 30px;">Estaremos muy contentos que nos visites en:</p>
+                <a href="https://eurekacgr.github.io/eureka/" target="_blank" style="display: inline-block; background: white; color: #667eea; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 1.2em; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                    https://eurekacgr.github.io/eureka/
+                </a>
+                <div style="margin-top: 30px; font-size: 3em;">🚀✨</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animación de aparición de slides
+        const slides = document.querySelectorAll('.slide');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        slides.forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(50px)';
+            slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(slide);
+        });
+
+        // Efecto parallax suave
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.title-slide');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
